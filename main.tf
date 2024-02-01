@@ -32,7 +32,7 @@ module "network" {
 
 
 locals {
-  execution_role_arns  = concat(var.execution_role_arns, data.aws_iam_role.execution[*].arn)
+  execution_role_arns  = concat(var.execution_role_arns, values(data.aws_iam_role.execution)[*].arn)
   instance_name        = "${var.name}-${var.stage}"
   service_account_name = coalesce(var.service_account_name, var.name)
 
@@ -50,7 +50,6 @@ locals {
     [
       module.sso_roles.by_name.InfrastructureAdmin,
       module.sso_roles.by_name.SecretsAccess,
-      data.aws_iam_role.execution.arn
     ]
   )
 
@@ -63,7 +62,7 @@ locals {
 }
 
 data "aws_iam_role" "execution" {
-  for_each = var.execution_role_names
+  for_each = toset(var.execution_role_names)
 
   name = each.value
 }
