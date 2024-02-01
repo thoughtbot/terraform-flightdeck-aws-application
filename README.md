@@ -16,6 +16,10 @@ module "production" {
   name          = "example"
   stage         = "production"
 
+  # Generate a secret key
+  generate_secret_key = true
+  secret_key_variable = "SECRET_KEY_BASE"
+
   # Postgres
   postgres_enabled               = true
   postgres_allocated_storage     = 64
@@ -34,7 +38,7 @@ module "production" {
   s3_enabled     = true
   s3_bucket_name = "example-uploads"
 
-  # Sentry
+  # Sentry DSN
   sentry_enabled      = true
   sentry_organization = "myorg"
   sentry_project      = "example"
@@ -43,6 +47,10 @@ module "production" {
   developer_managed_secrets = {
     Email = ["SMTP_USERNAME", "SMTP_PASSWORD"]
   }
+
+  # AWS IAM Identity Center permissions
+  readwrite_permission_sets = ["DeveloperAccess"]
+  secret_permission_sets    = ["SecretsAccess"]
 }
 ```
 

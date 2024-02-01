@@ -20,6 +20,24 @@ variable "cluster_names" {
   type        = list(string)
 }
 
+variable "read_permission_sets" {
+  description = "AWS IAM permission sets allowed to read application data"
+  type        = list(string)
+  default     = []
+}
+
+variable "readwrite_permission_sets" {
+  description = "AWS IAM permission sets allowed to read and write application data"
+  type        = list(string)
+  default     = []
+}
+
+variable "secret_permission_sets" {
+  description = "AWS IAM permission sets allow to read and manage secrets"
+  type = list(string)
+  default = []
+}
+
 variable "service_account_name" {
   description = "Name of the Kubernetes service account for the application"
   type        = string

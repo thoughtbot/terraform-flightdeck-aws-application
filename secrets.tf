@@ -1,4 +1,5 @@
 module "secret_key" {
+  count  = var.generate_secret_key ? 1 : 0
   source = "github.com/thoughtbot/terraform-aws-secrets//random-secret?ref=v0.6.0"
 
   description           = "Secret key for ${local.instance_name}"
@@ -14,8 +15,8 @@ module "developer_managed_secrets" {
   description           = "Developer-managed ${each.key} secrets for ${local.instance_name}"
   environment_variables = each.value
   name                  = "${local.instance_name}-${lower(each.key)}"
-  read_principals       = local.read_principals
-  readwrite_principals  = local.readwrite_principals
+  read_principals       = local.secret_principals
+  readwrite_principals  = local.secret_principals
 }
 
 module "secrets_policy" {

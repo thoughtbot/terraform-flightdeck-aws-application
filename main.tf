@@ -36,27 +36,40 @@ locals {
   instance_name        = "${var.name}-${var.stage}"
   service_account_name = coalesce(var.service_account_name, var.name)
 
+  read_permission_set_roles = [
+    for name in var.read_permission_sets :
+    module.sso_roles.by_name[name]
+  ]
+
   read_principals = concat(
     local.execution_role_arns,
-    [
-      module.sso_roles.by_name.InfrastructureAdmin,
-      module.sso_roles.by_name.SecretsAccess,
-      module.pod_role.arn,
-    ]
+    local.read_permission_set_roles
   )
+
+  readwrite_permission_set_roles = [
+    for name in var.readwrite_permission_sets :
+    module.sso_roles.by_name[name]
+  ]
 
   readwrite_principals = concat(
     local.execution_role_arns,
-    [
-      module.sso_roles.by_name.InfrastructureAdmin,
-      module.sso_roles.by_name.SecretsAccess,
-    ]
+    local.readwrite_permission_set_roles
+  )
+
+  secret_permission_set_roles = [
+    for name in var.secret_permission_sets :
+    module.sso_roles.by_name[name]
+  ]
+
+  secret_principals = concat(
+    local.execution_role_arns,
+    local.secret_permission_set_roles
   )
 
   secrets = concat(
     module.postgres_admin_login[*],
     module.redis_token[*],
-    [module.secret_key],
+    module.secret_key[*],
     values(module.developer_managed_secrets),
   )
 }
