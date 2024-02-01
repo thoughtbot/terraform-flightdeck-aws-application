@@ -28,8 +28,8 @@ module "secrets_policy" {
   depends_on = [
     module.postgres_admin_login,
     module.redis_token,
-    module.secret_key_base,
-    module.user_managed_secrets,
+    module.secret_key,
+    module.developer_managed_secrets,
   ]
 }
 

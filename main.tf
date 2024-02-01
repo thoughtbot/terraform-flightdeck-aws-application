@@ -56,8 +56,8 @@ locals {
   secrets = concat(
     module.postgres_admin_login[*],
     module.redis_token[*],
-    [module.secret_key_base],
-    values(module.user_managed_secrets),
+    [module.secret_key],
+    values(module.developer_managed_secrets),
   )
 }
 
