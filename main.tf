@@ -11,6 +11,7 @@ module "pod_role" {
 }
 
 module "pod_policy" {
+  count  = var.s3_enabled ? 1 : 0
   source = "github.com/thoughtbot/flightdeck//aws/service-account-policy?ref=v0.9.0"
 
   name             = "${local.instance_name}-pods"
