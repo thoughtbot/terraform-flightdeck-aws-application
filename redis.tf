@@ -24,3 +24,11 @@ module "redis_token" {
   depends_on = [module.redis]
 }
 
+module "redis_policy" {
+  count  = var.redis_enabled ? 1 : 0
+  source = "github.com/thoughtbot/terraform-aws-secrets//read-secret-policy?ref=v0.6.0"
+
+  policy_name  = "${local.instance_name}-redis"
+  role_names   = [module.pod_role.name]
+  secret_names = [module.redis_token[count.index].secret_name]
+}

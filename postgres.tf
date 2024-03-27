@@ -2,19 +2,20 @@ module "postgres" {
   count  = var.postgres_enabled ? 1 : 0
   source = "github.com/thoughtbot/terraform-aws-databases//rds-postgres/primary-instance?ref=v0.4.0"
 
-  admin_username        = var.postgres_admin_username
-  allocated_storage     = var.postgres_allocated_storage
-  allowed_cidr_blocks   = [module.network.vpc.cidr_block]
-  apply_immediately     = var.postgres_apply_immediately
-  default_database      = var.postgres_default_database
-  engine_version        = var.postgres_engine_version
-  identifier            = var.postgres_identifier
-  instance_class        = var.postgres_instance_class
-  max_allocated_storage = var.postgres_max_allocated_storage
-  parameter_group_name  = "${var.postgres_identifier}-${random_id.parameter_group.hex}"
-  storage_encrypted     = var.postgres_storage_encrypted
-  subnet_ids            = module.network.private_subnet_ids
-  vpc_id                = module.network.vpc.id
+  admin_username           = var.postgres_admin_username
+  allocated_storage        = var.postgres_allocated_storage
+  allowed_cidr_blocks      = [module.network.vpc.cidr_block]
+  apply_immediately        = var.postgres_apply_immediately
+  create_cloudwatch_alarms = false
+  default_database         = var.postgres_default_database
+  engine_version           = var.postgres_engine_version
+  identifier               = var.postgres_identifier
+  instance_class           = var.postgres_instance_class
+  max_allocated_storage    = var.postgres_max_allocated_storage
+  parameter_group_name     = "${var.postgres_identifier}-${random_id.parameter_group.hex}"
+  storage_encrypted        = var.postgres_storage_encrypted
+  subnet_ids               = module.network.private_subnet_ids
+  vpc_id                   = module.network.vpc.id
 }
 
 resource "random_id" "parameter_group" {
@@ -38,4 +39,13 @@ module "postgres_admin_login" {
   vpc_id           = module.network.vpc.id
 
   depends_on = [module.postgres]
+}
+
+module "postgres_policy" {
+  count  = var.postgres_enabled ? 1 : 0
+  source = "github.com/thoughtbot/terraform-aws-secrets//read-secret-policy?ref=v0.6.0"
+
+  policy_name  = "${local.instance_name}-postgres"
+  role_names   = [module.pod_role.name]
+  secret_names = [module.postgres_admin_login[count.index].secret_name]
 }

@@ -7,6 +7,15 @@ module "secret_key" {
   name                  = "${local.instance_name}-secret-key"
 }
 
+module "secret_key_policy" {
+  count  = var.generate_secret_key ? 1 : 0
+  source = "github.com/thoughtbot/terraform-aws-secrets//read-secret-policy?ref=v0.6.0"
+
+  policy_name  = "${local.instance_name}-secret-key"
+  role_names   = [module.pod_role.name]
+  secret_names = [module.developer_managed_secrets[count.index].secret_name]
+}
+
 module "developer_managed_secrets" {
   for_each = var.developer_managed_secrets
 
@@ -19,18 +28,10 @@ module "developer_managed_secrets" {
   readwrite_principals  = local.secret_principals
 }
 
-module "secrets_policy" {
+module "developer_managed_secrets_policy" {
   source = "github.com/thoughtbot/terraform-aws-secrets//read-secret-policy?ref=v0.6.0"
 
-  policy_name  = "${local.instance_name}-secrets"
+  policy_name  = "${local.instance_name}-managed-secrets"
   role_names   = [module.pod_role.name]
-  secret_names = local.secrets.*.secret_name
-
-  depends_on = [
-    module.postgres_admin_login,
-    module.redis_token,
-    module.secret_key,
-    module.developer_managed_secrets,
-  ]
+  secret_names = values(module.developer_managed_secrets)[*].secret_name
 }
-
