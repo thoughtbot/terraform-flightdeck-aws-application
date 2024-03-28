@@ -34,4 +34,6 @@ module "developer_managed_secrets_policy" {
   policy_name  = "${local.instance_name}-managed-secrets"
   role_names   = [module.pod_role.name]
   secret_names = values(module.developer_managed_secrets)[*].secret_name
+
+  depends_on = [module.developer_managed_secrets]
 }
