@@ -5,6 +5,8 @@ module "secret_key" {
   description           = "Secret key for ${local.instance_name}"
   environment_variables = [var.secret_key_variable]
   name                  = "${local.instance_name}-secret-key"
+  read_principals       = local.secret_read_principals
+  readwrite_principals  = local.secret_write_principals
 }
 
 module "secret_key_policy" {
@@ -24,8 +26,8 @@ module "developer_managed_secrets" {
   description           = "Developer-managed ${each.key} secrets for ${local.instance_name}"
   environment_variables = each.value
   name                  = "${local.instance_name}-${lower(each.key)}"
-  read_principals       = local.secret_principals
-  readwrite_principals  = local.secret_principals
+  read_principals       = local.secret_read_principals
+  readwrite_principals  = local.secret_write_principals
 }
 
 module "developer_managed_secrets_policy" {

@@ -44,7 +44,8 @@ locals {
 
   read_principals = concat(
     local.execution_role_arns,
-    local.read_permission_set_roles
+    local.read_permission_set_roles,
+    [module.pod_role.arn],
   )
 
   readwrite_permission_set_roles = [
@@ -62,9 +63,14 @@ locals {
     module.sso_roles.by_name[name]
   ]
 
-  secret_principals = concat(
+  secret_write_principals = concat(
     local.execution_role_arns,
     local.secret_permission_set_roles
+  )
+
+  secret_read_principals = concat(
+    local.secret_write_principals,
+    [module.pod_role.arn]
   )
 
   secrets = concat(
