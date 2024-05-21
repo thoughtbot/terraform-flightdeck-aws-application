@@ -48,4 +48,6 @@ module "postgres_policy" {
   policy_name  = "${local.instance_name}-postgres"
   role_names   = [module.pod_role.name]
   secret_names = [module.postgres_admin_login[count.index].secret_name]
+
+  depends_on = [module.postgres_admin_login]
 }
