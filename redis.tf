@@ -31,4 +31,6 @@ module "redis_policy" {
   policy_name  = "${local.instance_name}-redis"
   role_names   = [module.pod_role.name]
   secret_names = [module.redis_token[count.index].secret_name]
+
+  depends_on = [module.redis_token]
 }
