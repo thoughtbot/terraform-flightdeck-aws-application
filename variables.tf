@@ -34,8 +34,8 @@ variable "readwrite_permission_sets" {
 
 variable "secret_permission_sets" {
   description = "AWS IAM permission sets allow to read and manage secrets"
-  type = list(string)
-  default = []
+  type        = list(string)
+  default     = []
 }
 
 variable "service_account_name" {
