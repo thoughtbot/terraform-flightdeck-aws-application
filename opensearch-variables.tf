@@ -39,11 +39,6 @@ variable "es_ebs_iops" {
   default     = 1000
 }
 
-variable "es_region" {
-  type        = string
-  description = "AWS Region for the Opensearch instance"
-}
-
 variable "es_engine_version" {
   type        = number
   description = "Version of Elasticsearch to deploy."

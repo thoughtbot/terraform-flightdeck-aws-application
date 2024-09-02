@@ -1,7 +1,7 @@
 data "aws_availability_zones" "available" {}
 
 locals {
-  region = var.es_region
+  region = data.aws_region.current.name
   name   = "es-${var.es_application_name}"
 }
 
@@ -171,3 +171,4 @@ module "secret" {
   })
 }
 
+data "aws_region" "current" {}
