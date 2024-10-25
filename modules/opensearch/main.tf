@@ -303,23 +303,7 @@ resource "aws_opensearch_domain_saml_options" "this" {
 resource "aws_opensearch_outbound_connection" "this" {
   for_each = { for k, v in var.outbound_connections : k => v if var.create }
 
-  accept_connection = try(each.value.accept_connection, null)
   connection_alias  = try(each.value.connection_alias, each.key)
-  connection_mode   = each.value.connection_mode
-
-  dynamic "connection_properties" {
-    for_each = try([each.value.connection_properties], [])
-
-    content {
-      dynamic "cross_cluster_search" {
-        for_each = try([connection_properties.value.cross_cluster_search], [])
-
-        content {
-          skip_unavailable = try(cross_cluster_search.value.skip_unavailable, null)
-        }
-      }
-    }
-  }
 
   local_domain_info {
     owner_id    = try(each.value.local_domain_info.owner_id, local.account_id)
