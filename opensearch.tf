@@ -104,13 +104,6 @@ module "opensearch" {
     subnet_ids = module.network.private_subnet_ids
   }
 
-  # VPC endpoint
-  vpc_endpoints = {
-    one = {
-      subnet_ids = module.network.private_subnet_ids
-    }
-  }
-
   # Security Group rule example
   security_group_rules = {
     ingress_443 = {
