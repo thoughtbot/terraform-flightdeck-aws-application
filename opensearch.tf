@@ -90,14 +90,8 @@ module "opensearch" {
     { log_type = "SEARCH_SLOW_LOGS" },
   ]
 
-  ip_address_type = "dualstack"
-
   node_to_node_encryption = {
     enabled = true
-  }
-
-  software_update_options = {
-    auto_software_update_enabled = true
   }
 
   vpc_options = {

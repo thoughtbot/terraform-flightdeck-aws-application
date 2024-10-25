@@ -79,7 +79,6 @@ resource "aws_opensearch_domain" "this" {
       }
 
       rollback_on_disable = try(auto_tune_options.value.rollback_on_disable, null)
-      use_off_peak_window = try(auto_tune_options.value.use_off_peak_window, null)
     }
   }
 
@@ -100,7 +99,6 @@ resource "aws_opensearch_domain" "this" {
       dedicated_master_type         = try(cluster_config.value.dedicated_master_type, "c6g.large.search")
       instance_count                = try(cluster_config.value.instance_count, 3)
       instance_type                 = try(cluster_config.value.instance_type, "r6g.large.search")
-      multi_az_with_standby_enabled = try(cluster_config.value.multi_az_with_standby_enabled, null)
       warm_count                    = try(cluster_config.value.warm_count, null)
       warm_enabled                  = try(cluster_config.value.warm_enabled, null)
       warm_type                     = try(cluster_config.value.warm_type, null)
@@ -164,7 +162,6 @@ resource "aws_opensearch_domain" "this" {
   }
 
   engine_version  = var.engine_version
-  ip_address_type = var.ip_address_type
 
   dynamic "log_publishing_options" {
     for_each = { for opt in var.log_publishing_options : opt.log_type => opt }
@@ -181,37 +178,6 @@ resource "aws_opensearch_domain" "this" {
 
     content {
       enabled = try(node_to_node_encryption.value.enabled, true)
-    }
-  }
-
-  dynamic "off_peak_window_options" {
-    for_each = length(var.off_peak_window_options) > 0 ? [var.off_peak_window_options] : []
-
-    content {
-      enabled = try(off_peak_window_options.value.enabled, true)
-
-      dynamic "off_peak_window" {
-        for_each = try([off_peak_window_options.value.off_peak_window], [])
-
-        content {
-          dynamic "window_start_time" {
-            for_each = try([off_peak_window.value.window_start_time], [])
-
-            content {
-              hours   = try(window_start_time.value.hours, null)
-              minutes = try(window_start_time.value.minutes, null)
-            }
-          }
-        }
-      }
-    }
-  }
-
-  dynamic "software_update_options" {
-    for_each = length(var.software_update_options) > 0 ? [var.software_update_options] : []
-
-    content {
-      auto_software_update_enabled = try(software_update_options.value.auto_software_update_enabled, true)
     }
   }
 

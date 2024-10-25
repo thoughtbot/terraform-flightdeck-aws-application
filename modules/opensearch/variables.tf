@@ -91,12 +91,6 @@ variable "engine_version" {
   default     = null
 }
 
-variable "ip_address_type" {
-  description = "The IP address type for the endpoint. Valid values are ipv4 and dualstack"
-  type        = string
-  default     = null
-}
-
 variable "log_publishing_options" {
   description = "Configuration block for publishing slow and application logs to CloudWatch Logs. This block can be declared multiple times, for each log_type, within the same resource"
   type        = any
@@ -111,25 +105,6 @@ variable "node_to_node_encryption" {
   type        = any
   default = {
     enabled = true
-  }
-}
-
-variable "off_peak_window_options" {
-  description = "Configuration to add Off Peak update options"
-  type        = any
-  default = {
-    enabled = true
-    off_peak_window = {
-      hours = 7
-    }
-  }
-}
-
-variable "software_update_options" {
-  description = "Software update options for the domain"
-  type        = any
-  default = {
-    auto_software_update_enabled = true
   }
 }
 
