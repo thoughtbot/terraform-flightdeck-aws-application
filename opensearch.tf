@@ -151,9 +151,9 @@ module "secret" {
   resource_tags    = var.tags
 
   initial_value = jsonencode({
-    ES_ENDPOINT           = module.opensearch.domain_endpoint
-    ES_DASHBOARD_ENDPOINT = module.opensearch.domain_dashboard_endpoint
-    DOMAIN_ID             = module.opensearch.domain_id
+    ES_ENDPOINT           = module.opensearch[0].domain_endpoint
+    ES_DASHBOARD_ENDPOINT = module.opensearch[0].domain_dashboard_endpoint
+    DOMAIN_ID             = module.opensearch[0].domain_id
     PASSWORD              = random_password.es.result
   })
 }
