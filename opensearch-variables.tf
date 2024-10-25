@@ -7,7 +7,7 @@ variable "es_application_name" {
 variable "es_instance_count" {
   type        = number
   description = "Number of instances in the cluster"
-  default     = 1
+  default     = 2
 }
 
 variable "es_dedicated_master_type" {
@@ -36,7 +36,7 @@ variable "es_volume_size" {
 variable "es_ebs_iops" {
   type        = number
   description = "Baseline input/output (I/O) performance of EBS volumes attached to data nodes"
-  default     = 1000
+  default     = 3000
 }
 
 variable "es_engine_version" {
