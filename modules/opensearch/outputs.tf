@@ -33,24 +33,6 @@ output "domain_dashboard_endpoint_v2" {
 }
 
 ################################################################################
-# Package Association(s)
-################################################################################
-
-output "package_associations" {
-  description = "Map of package associations created and their attributes"
-  value       = aws_opensearch_package_association.this
-}
-
-################################################################################
-# VPC Endpoint(s)
-################################################################################
-
-output "vpc_endpoints" {
-  description = "Map of VPC endpoints created and their attributes"
-  value       = aws_opensearch_vpc_endpoint.this
-}
-
-################################################################################
 # Outbound Connections
 ################################################################################
 

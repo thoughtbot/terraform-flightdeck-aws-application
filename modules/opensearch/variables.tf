@@ -146,26 +146,6 @@ variable "timeouts" {
 }
 
 ################################################################################
-# Package Association(s)
-################################################################################
-
-variable "package_associations" {
-  description = "Map of package association IDs to associate with the domain"
-  type        = map(string)
-  default     = {}
-}
-
-################################################################################
-# VPC Endpoint(s)
-################################################################################
-
-variable "vpc_endpoints" {
-  description = "Map of VPC endpoints to create for the domain"
-  type        = any
-  default     = {}
-}
-
-################################################################################
 # Access Policy
 ################################################################################
 

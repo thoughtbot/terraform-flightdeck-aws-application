@@ -233,32 +233,6 @@ resource "aws_opensearch_domain" "this" {
 }
 
 ################################################################################
-# Package Association(s)
-################################################################################
-
-resource "aws_opensearch_package_association" "this" {
-  for_each = { for k, v in var.package_associations : k => v if var.create }
-
-  package_id  = try(each.value.package_id, each.key)
-  domain_name = aws_opensearch_domain.this[0].domain_name
-}
-
-################################################################################
-# VPC Endpoint(s)
-################################################################################
-
-resource "aws_opensearch_vpc_endpoint" "this" {
-  for_each = { for k, v in var.vpc_endpoints : k => v if var.create }
-
-  domain_arn = aws_opensearch_domain.this[0].arn
-
-  vpc_options {
-    security_group_ids = try(each.value.security_group_ids, null)
-    subnet_ids         = each.value.subnet_ids
-  }
-}
-
-################################################################################
 # Access Policy
 ################################################################################
 
@@ -409,7 +383,6 @@ resource "aws_cloudwatch_log_group" "this" {
   retention_in_days = try(each.value.log_group_retention_in_days, var.cloudwatch_log_group_retention_in_days)
   kms_key_id        = try(each.value.log_group_kms_key_id, var.cloudwatch_log_group_kms_key_id)
   skip_destroy      = try(each.value.log_group_skip_destroy, var.cloudwatch_log_group_skip_destroy)
-  log_group_class   = try(each.value.log_group_class, var.cloudwatch_log_group_class)
 
   tags = merge(local.tags, try(each.value.log_group_tags, {}))
 }

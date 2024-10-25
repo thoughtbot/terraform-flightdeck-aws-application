@@ -40,7 +40,7 @@ variable "es_ebs_iops" {
 }
 
 variable "es_engine_version" {
-  type        = number
+  type        = string
   description = "Version of Elasticsearch to deploy."
 }
 
