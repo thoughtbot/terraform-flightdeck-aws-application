@@ -155,7 +155,7 @@ resource "random_password" "es" {
 
 module "secret" {
   count  = var.elasticsearch_enabled ? 1 : 0
-  source = "github.com/thoughtbot/terraform-aws-secrets//secret?ref=v0.8.0"
+  source = "github.com/thoughtbot/terraform-aws-secrets//secret?ref=v0.7.0"
 
   admin_principals = var.admin_principals
   description      = "Elastisearch password for: ${local.name}"
