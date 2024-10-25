@@ -1,3 +1,5 @@
+# Based on: https://github.com/terraform-community-modules/tf_aws_elasticsearch
+
 data "aws_region" "current" {
   count = var.create ? 1 : 0
 }
