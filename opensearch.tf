@@ -16,7 +16,7 @@ resource "aws_iam_service_linked_role" "elasticsearch" {
 
 module "opensearch" {
   count  = var.elasticsearch_enabled ? 1 : 0
-  source = "terraform-aws-modules/opensearch/aws"
+  source = "./modules/opensearch"
 
   # Domain
   advanced_options = {
