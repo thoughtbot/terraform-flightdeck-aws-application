@@ -158,4 +158,23 @@ module "secret" {
   })
 }
 
+resource "aws_iam_role_policy_attachment" "test-attach" {
+  count  = var.elasticsearch_enabled ? 1 : 0
+
+  role       = module.pod_role.name
+  policy_arn = "arn:aws:iam::aws:policy/aws-service-role/AmazonElasticsearchServiceRolePolicy"
+
+  depends_on = [ module.pod_policy ]
+}
+
+module "pod_policy" {
+  count  = var.elasticsearch_enabled ? 1 : 0
+  source = "github.com/thoughtbot/flightdeck//aws/service-account-policy?ref=v0.9.0"
+
+  name             = "es-${var.es_application_name}-pods"
+  policy_documents = module.secret[*].policy_json
+
+  role_names       = [module.pod_role.name]
+}
+
 data "aws_region" "current" {}
