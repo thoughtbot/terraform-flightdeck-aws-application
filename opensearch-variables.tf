@@ -44,13 +44,13 @@ variable "es_engine_version" {
   description = "Version of Elasticsearch to deploy."
 }
 
-variable "admin_principals" {
+variable "es_admin_principals" {
   description = "Principals allowed to peform admin actions (default: current account)"
   type        = list(string)
   default     = null
 }
 
-variable "read_principals" {
+variable "es_read_principals" {
   description = "Principals allowed to read the secret (default: current account)"
   type        = list(string)
   default     = null

@@ -53,3 +53,20 @@ output "security_group_id" {
   description = "ID of the security group"
   value       = try(aws_security_group.this[0].id, null)
 }
+
+################################################################################
+# Secret details
+################################################################################
+
+output "secret_details" {
+  description = "Map containing secret details for opensearch credentials"
+  value = [
+    {
+      name                  = secret.secret_name
+      environment_variables = ["ES_ENDPOINT", "ES_DASHBOARD_ENDPOINT", "ES_DOMAIN_ID", "ES_PASSWORD"]
+      policy_json           = module.elasticsearch_secret.policy_json
+      kms_key_arn           = module.elasticsearch_secret.kms_key_arn
+      secret_arn            = module.elasticsearch_secret.arn
+    }
+  ]
+}

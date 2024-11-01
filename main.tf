@@ -77,6 +77,7 @@ locals {
     module.postgres_admin_login[*],
     module.redis_token[*],
     module.secret_key[*],
+    module.opensearch[0].secret_details,
     values(module.developer_managed_secrets),
   )
 }

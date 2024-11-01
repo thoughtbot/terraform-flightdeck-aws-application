@@ -1,3 +1,9 @@
+variable "application_name" {
+  type        = string
+  description = "Unique name for the opensearch instance"
+  default     = ""
+}
+
 variable "create" {
   description = "Determines whether resources will be created (affects all resources)"
   type        = bool
@@ -270,4 +276,16 @@ variable "security_group_tags" {
   description = "A map of additional tags to add to the security group created"
   type        = map(string)
   default     = {}
+}
+
+variable "admin_principals" {
+  description = "Principals allowed to peform admin actions (default: current account)"
+  type        = list(string)
+  default     = null
+}
+
+variable "read_principals" {
+  description = "Principals allowed to read the secret (default: current account)"
+  type        = list(string)
+  default     = null
 }
