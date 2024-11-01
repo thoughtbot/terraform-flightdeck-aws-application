@@ -22,6 +22,8 @@ locals {
   static_domain_arn = "arn:${local.partition}:es:${local.region}:${local.account_id}:domain/${var.domain_name}"
 
   tags = merge(var.tags, { terraform-aws-modules = "opensearch" })
+
+  name   = "es-${var.application_name}"
 }
 
 ################################################################################
@@ -458,9 +460,9 @@ module "elasticsearch_secret" {
   resource_tags    = var.tags
 
   initial_value = jsonencode({
-    ES_ENDPOINT           = module.opensearch[0].domain_endpoint
-    ES_DASHBOARD_ENDPOINT = module.opensearch[0].domain_dashboard_endpoint
-    ES_DOMAIN_ID          = module.opensearch[0].domain_id
-    ES_PASSWORD           = random_password.es.result
+    ES_ENDPOINT           = try(aws_opensearch_domain.this[0].endpoint, null)
+    ES_DASHBOARD_ENDPOINT = try(aws_opensearch_domain.this[0].dashboard_endpoint, null)
+    ES_DOMAIN_ID          = try(aws_opensearch_domain.this[0].domain_id, null)
+    ES_PASSWORD           = var.advanced_security_options.master_user_options.master_user_password
   })
 }

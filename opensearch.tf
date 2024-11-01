@@ -146,24 +146,6 @@ resource "random_password" "es" {
   special = false
 }
 
-module "elasticsearch_secret" {
-  count  = var.elasticsearch_enabled ? 1 : 0
-  source = "github.com/thoughtbot/terraform-aws-secrets//secret?ref=v0.4.0"
-
-  admin_principals = var.admin_principals
-  description      = "Elastisearch secrets for: ${local.name}"
-  name             = "${local.name}-secret"
-  read_principals  = var.read_principals
-  resource_tags    = var.tags
-
-  initial_value = jsonencode({
-    ES_ENDPOINT           = module.opensearch[0].domain_endpoint
-    ES_DASHBOARD_ENDPOINT = module.opensearch[0].domain_dashboard_endpoint
-    ES_DOMAIN_ID          = module.opensearch[0].domain_id
-    ES_PASSWORD           = random_password.es.result
-  })
-}
-
 resource "aws_iam_role_policy_attachment" "test-attach" {
   count = var.elasticsearch_enabled ? 1 : 0
 
@@ -173,7 +155,7 @@ resource "aws_iam_role_policy_attachment" "test-attach" {
   depends_on = [module.pod_policy]
 }
 
-module "pod_policy" {
+module "es_pod_policy" {
   count  = var.elasticsearch_enabled ? 1 : 0
   source = "github.com/thoughtbot/flightdeck//aws/service-account-policy?ref=v0.9.0"
 
