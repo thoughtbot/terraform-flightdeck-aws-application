@@ -90,6 +90,12 @@ module "opensearch" {
     { log_type = "SEARCH_SLOW_LOGS" },
   ]
 
+  application_name = var.es_application_name
+
+  admin_principals = var.es_admin_principals
+
+  read_principals = var.es_read_principals
+
   node_to_node_encryption = {
     enabled = true
   }
@@ -140,12 +146,12 @@ resource "random_password" "es" {
   special = false
 }
 
-module "secret" {
+module "elasticsearch_secret" {
   count  = var.elasticsearch_enabled ? 1 : 0
   source = "github.com/thoughtbot/terraform-aws-secrets//secret?ref=v0.4.0"
 
   admin_principals = var.admin_principals
-  description      = "Elastisearch password for: ${local.name}"
+  description      = "Elastisearch secrets for: ${local.name}"
   name             = "${local.name}-secret"
   read_principals  = var.read_principals
   resource_tags    = var.tags
@@ -153,18 +159,18 @@ module "secret" {
   initial_value = jsonencode({
     ES_ENDPOINT           = module.opensearch[0].domain_endpoint
     ES_DASHBOARD_ENDPOINT = module.opensearch[0].domain_dashboard_endpoint
-    DOMAIN_ID             = module.opensearch[0].domain_id
-    PASSWORD              = random_password.es.result
+    ES_DOMAIN_ID          = module.opensearch[0].domain_id
+    ES_PASSWORD           = random_password.es.result
   })
 }
 
 resource "aws_iam_role_policy_attachment" "test-attach" {
-  count  = var.elasticsearch_enabled ? 1 : 0
+  count = var.elasticsearch_enabled ? 1 : 0
 
   role       = module.pod_role.name
   policy_arn = "arn:aws:iam::aws:policy/aws-service-role/AmazonElasticsearchServiceRolePolicy"
 
-  depends_on = [ module.pod_policy ]
+  depends_on = [module.pod_policy]
 }
 
 module "pod_policy" {
@@ -172,9 +178,9 @@ module "pod_policy" {
   source = "github.com/thoughtbot/flightdeck//aws/service-account-policy?ref=v0.9.0"
 
   name             = "es-${var.es_application_name}-pods"
-  policy_documents = module.secret[*].policy_json
+  policy_documents = module.opensearch[*].secret_details.policy_json
 
-  role_names       = [module.pod_role.name]
+  role_names = [module.pod_role.name]
 }
 
 data "aws_region" "current" {}

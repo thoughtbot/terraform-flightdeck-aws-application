@@ -96,14 +96,14 @@ resource "aws_opensearch_domain" "this" {
         }
       }
 
-      dedicated_master_count        = try(cluster_config.value.dedicated_master_count, 3)
-      dedicated_master_enabled      = try(cluster_config.value.dedicated_master_enabled, true)
-      dedicated_master_type         = try(cluster_config.value.dedicated_master_type, "c6g.large.search")
-      instance_count                = try(cluster_config.value.instance_count, 3)
-      instance_type                 = try(cluster_config.value.instance_type, "r6g.large.search")
-      warm_count                    = try(cluster_config.value.warm_count, null)
-      warm_enabled                  = try(cluster_config.value.warm_enabled, null)
-      warm_type                     = try(cluster_config.value.warm_type, null)
+      dedicated_master_count   = try(cluster_config.value.dedicated_master_count, 3)
+      dedicated_master_enabled = try(cluster_config.value.dedicated_master_enabled, true)
+      dedicated_master_type    = try(cluster_config.value.dedicated_master_type, "c6g.large.search")
+      instance_count           = try(cluster_config.value.instance_count, 3)
+      instance_type            = try(cluster_config.value.instance_type, "r6g.large.search")
+      warm_count               = try(cluster_config.value.warm_count, null)
+      warm_enabled             = try(cluster_config.value.warm_enabled, null)
+      warm_type                = try(cluster_config.value.warm_type, null)
 
       dynamic "zone_awareness_config" {
         for_each = try([cluster_config.value.zone_awareness_config], [])
@@ -163,7 +163,7 @@ resource "aws_opensearch_domain" "this" {
     }
   }
 
-  engine_version  = var.engine_version
+  engine_version = var.engine_version
 
   dynamic "log_publishing_options" {
     for_each = { for opt in var.log_publishing_options : opt.log_type => opt }
@@ -305,7 +305,7 @@ resource "aws_opensearch_domain_saml_options" "this" {
 resource "aws_opensearch_outbound_connection" "this" {
   for_each = { for k, v in var.outbound_connections : k => v if var.create }
 
-  connection_alias  = try(each.value.connection_alias, each.key)
+  connection_alias = try(each.value.connection_alias, each.key)
 
   local_domain_info {
     owner_id    = try(each.value.local_domain_info.owner_id, local.account_id)
@@ -446,4 +446,21 @@ resource "aws_vpc_security_group_egress_rule" "this" {
   to_port                      = try(each.value.to_port, null)
 
   tags = merge(local.tags, var.security_group_tags, try(each.value.tags, {}))
+}
+
+module "elasticsearch_secret" {
+  source = "github.com/thoughtbot/terraform-aws-secrets//secret?ref=v0.4.0"
+
+  admin_principals = var.admin_principals
+  description      = "Elastisearch secrets for: ${local.name}"
+  name             = "${local.name}-secret"
+  read_principals  = var.read_principals
+  resource_tags    = var.tags
+
+  initial_value = jsonencode({
+    ES_ENDPOINT           = module.opensearch[0].domain_endpoint
+    ES_DASHBOARD_ENDPOINT = module.opensearch[0].domain_dashboard_endpoint
+    ES_DOMAIN_ID          = module.opensearch[0].domain_id
+    ES_PASSWORD           = random_password.es.result
+  })
 }
