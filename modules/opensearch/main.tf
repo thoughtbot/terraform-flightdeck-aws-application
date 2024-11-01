@@ -452,15 +452,16 @@ module "elasticsearch_secret" {
   source = "github.com/thoughtbot/terraform-aws-secrets//secret?ref=v0.4.0"
 
   admin_principals = var.admin_principals
-  description      = "Elastisearch secrets for: ${local.name}"
-  name             = "${local.name}-secret"
+  description      = "Elastisearch secrets for: ${var.application_name}"
+  name             = "${var.application_name}-secret"
   read_principals  = var.read_principals
   resource_tags    = var.tags
 
   initial_value = jsonencode({
-    ES_ENDPOINT           = module.opensearch[0].domain_endpoint
-    ES_DASHBOARD_ENDPOINT = module.opensearch[0].domain_dashboard_endpoint
-    ES_DOMAIN_ID          = module.opensearch[0].domain_id
-    ES_PASSWORD           = random_password.es.result
+    AWS_SEARCH_ENDPOINT           = try(aws_opensearch_domain.this[0].endpoint, null)
+    AWS_SEARCH_DASHBOARD_ENDPOINT = try(aws_opensearch_domain.this[0].dashboard_endpoint, null)
+    AWS_SEARCH_DOMAIN_ID          = try(aws_opensearch_domain.this[0].domain_id, null)
+    AWS_SEARCH_PASSWORD           = var.advanced_security_options.master_user_options.master_user_password
+    AWS_SEARCH_USER_NAME          = var.advanced_security_options.master_user_options.master_user_name
   })
 }

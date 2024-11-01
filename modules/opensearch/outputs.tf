@@ -58,15 +58,27 @@ output "security_group_id" {
 # Secret details
 ################################################################################
 
-output "secret_details" {
-  description = "Map containing secret details for opensearch credentials"
-  value = [
-    {
-      name                  = secret.secret_name
-      environment_variables = ["ES_ENDPOINT", "ES_DASHBOARD_ENDPOINT", "ES_DOMAIN_ID", "ES_PASSWORD"]
-      policy_json           = module.elasticsearch_secret.policy_json
-      kms_key_arn           = module.elasticsearch_secret.kms_key_arn
-      secret_arn            = module.elasticsearch_secret.arn
-    }
-  ]
+output "environment_variables" {
+  description = "Environment variables set by this rotation function"
+  value       = ["AWS_SEARCH_ENDPOINT", "AWS_SEARCH_DASHBOARD_ENDPOINT", "AWS_SEARCH_DOMAIN_ID", "AWS_SEARCH_PASSWORD", "AWS_SEARCH_USER_NAME"]
+}
+
+output "secret_name" {
+  description = "Name of the secrets manager secret containing credentials"
+  value       = module.elasticsearch_secret.name
+}
+
+output "policy_json" {
+  description = "Required IAM policies"
+  value       = module.elasticsearch_secret.policy_json
+}
+
+output "kms_key_arn" {
+  description = "ID of the KMS key used to encrypt the secret"
+  value       = module.elasticsearch_secret.kms_key_arn
+}
+
+output "secret_arn" {
+  description = "ARN of the secrets manager secret containing credentials"
+  value       = module.elasticsearch_secret.arn
 }
