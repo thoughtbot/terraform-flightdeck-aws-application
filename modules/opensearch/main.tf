@@ -444,7 +444,7 @@ resource "aws_vpc_security_group_egress_rule" "this" {
 }
 
 module "elasticsearch_secret" {
-  source = "github.com/thoughtbot/terraform-aws-secrets//secret?ref=v0.4.0"
+  source = "github.com/thoughtbot/terraform-aws-secrets//secret?ref=v0.8.0"
 
   admin_principals = var.admin_principals
   description      = "Elastisearch secrets for: ${var.application_name}"

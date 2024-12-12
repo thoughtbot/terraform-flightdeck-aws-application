@@ -1,6 +1,6 @@
 module "postgres" {
   count  = var.postgres_enabled ? 1 : 0
-  source = "github.com/thoughtbot/terraform-aws-databases//rds-postgres/primary-instance?ref=v0.4.0"
+  source = "github.com/thoughtbot/terraform-aws-databases//rds-postgres/primary-instance?ref=v0.6.0"
 
   admin_username           = var.postgres_admin_username
   allocated_storage        = var.postgres_allocated_storage
@@ -28,7 +28,7 @@ resource "random_id" "parameter_group" {
 
 module "postgres_admin_login" {
   count  = var.postgres_enabled ? 1 : 0
-  source = "github.com/thoughtbot/terraform-aws-databases//rds-postgres/admin-login?ref=v0.4.0"
+  source = "github.com/thoughtbot/terraform-aws-databases//rds-postgres/admin-login?ref=v0.6.0"
 
   database_name    = module.postgres[count.index].default_database
   identifier       = module.postgres[count.index].identifier
@@ -43,7 +43,7 @@ module "postgres_admin_login" {
 
 module "postgres_policy" {
   count  = var.postgres_enabled ? 1 : 0
-  source = "github.com/thoughtbot/terraform-aws-secrets//read-secret-policy?ref=v0.6.0"
+  source = "github.com/thoughtbot/terraform-aws-secrets//read-secret-policy?ref=v0.8.0"
 
   policy_name  = "${local.instance_name}-postgres"
   role_names   = [module.pod_role.name]

@@ -1,6 +1,6 @@
 module "redis" {
   count  = var.redis_enabled ? 1 : 0
-  source = "github.com/thoughtbot/terraform-aws-databases//elasticache-redis/replication-group?ref=v0.4.0"
+  source = "github.com/thoughtbot/terraform-aws-databases//elasticache-redis/replication-group?ref=v0.6.0"
 
   allowed_cidr_blocks = [module.network.vpc.cidr_block]
   description         = "Redis cluster for ${local.instance_name} jobs"
@@ -14,7 +14,7 @@ module "redis" {
 
 module "redis_token" {
   count  = var.redis_enabled ? 1 : 0
-  source = "github.com/thoughtbot/terraform-aws-databases//elasticache-redis/auth-token?ref=v0.4.0"
+  source = "github.com/thoughtbot/terraform-aws-databases//elasticache-redis/auth-token?ref=v0.6.0"
 
   initial_auth_token   = module.redis[count.index].initial_auth_token
   replication_group_id = module.redis[count.index].id
@@ -26,7 +26,7 @@ module "redis_token" {
 
 module "redis_policy" {
   count  = var.redis_enabled ? 1 : 0
-  source = "github.com/thoughtbot/terraform-aws-secrets//read-secret-policy?ref=v0.6.0"
+  source = "github.com/thoughtbot/terraform-aws-secrets//read-secret-policy?ref=v0.8.0"
 
   policy_name  = "${local.instance_name}-redis"
   role_names   = [module.pod_role.name]
