@@ -1,5 +1,5 @@
 module "deploy_role" {
-  source = "github.com/thoughtbot/terraform-eks-cicd//modules/github-actions-eks-deploy-role?ref=v0.2.0"
+  source = "github.com/thoughtbot/terraform-eks-cicd//modules/github-actions-eks-deploy-role?ref=v0.3.0"
 
   cluster_names         = var.cluster_names
   github_branches       = var.github_branches

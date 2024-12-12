@@ -1,6 +1,6 @@
 module "secret_key" {
   count  = var.generate_secret_key ? 1 : 0
-  source = "github.com/thoughtbot/terraform-aws-secrets//random-secret?ref=v0.6.0"
+  source = "github.com/thoughtbot/terraform-aws-secrets//random-secret?ref=v0.8.0"
 
   description           = "Secret key for ${local.instance_name}"
   environment_variables = [var.secret_key_variable]
@@ -11,7 +11,7 @@ module "secret_key" {
 
 module "secret_key_policy" {
   count  = var.generate_secret_key ? 1 : 0
-  source = "github.com/thoughtbot/terraform-aws-secrets//read-secret-policy?ref=v0.6.0"
+  source = "github.com/thoughtbot/terraform-aws-secrets//read-secret-policy?ref=v0.8.0"
 
   policy_name  = "${local.instance_name}-secret-key"
   role_names   = [module.pod_role.name]
@@ -21,7 +21,7 @@ module "secret_key_policy" {
 module "developer_managed_secrets" {
   for_each = var.developer_managed_secrets
 
-  source = "github.com/thoughtbot/terraform-aws-secrets//user-managed-secret?ref=v0.5.0"
+  source = "github.com/thoughtbot/terraform-aws-secrets//user-managed-secret?ref=v0.8.0"
 
   description           = "Developer-managed ${each.key} secrets for ${local.instance_name}"
   environment_variables = each.value
@@ -31,7 +31,7 @@ module "developer_managed_secrets" {
 }
 
 module "developer_managed_secrets_policy" {
-  source = "github.com/thoughtbot/terraform-aws-secrets//read-secret-policy?ref=v0.6.0"
+  source = "github.com/thoughtbot/terraform-aws-secrets//read-secret-policy?ref=v0.8.0"
 
   policy_name  = "${local.instance_name}-managed-secrets"
   role_names   = [module.pod_role.name]
