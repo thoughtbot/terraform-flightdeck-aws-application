@@ -90,7 +90,7 @@ module "opensearch" {
     { log_type = "SEARCH_SLOW_LOGS" },
   ]
 
-  application_name = var.es_application_name
+  application_name = local.name
 
   admin_principals = var.es_admin_principals
 
@@ -146,21 +146,26 @@ resource "random_password" "es" {
   special = false
 }
 
-resource "aws_iam_role_policy_attachment" "test-attach" {
-  count = var.elasticsearch_enabled ? 1 : 0
-
-  role       = module.pod_role.name
-  policy_arn = "arn:aws:iam::aws:policy/aws-service-role/AmazonElasticsearchServiceRolePolicy"
-
-  depends_on = [module.pod_policy]
+data "aws_iam_policy_document" "ecs_osis_access" {
+  statement {
+    sid       = "AllowOpensearchAccess"
+    resources = ["*"]
+    actions = [
+      "ec2:*",
+      "osis:*",
+    ]
+  }
 }
 
 module "es_pod_policy" {
   count  = var.elasticsearch_enabled ? 1 : 0
   source = "github.com/thoughtbot/flightdeck//aws/service-account-policy?ref=v0.9.0"
 
-  name             = "es-${var.es_application_name}-pods"
-  policy_documents = module.opensearch[*].secret_details.policy_json
+  name = "es-${var.es_application_name}-pods"
+  policy_documents = concat(
+    module.opensearch[0][*].policy_json,
+    [data.aws_iam_policy_document.ecs_osis_access.json]
+  )
 
   role_names = [module.pod_role.name]
 }
