@@ -15,15 +15,21 @@ data "aws_iam_session_context" "current" {
 }
 
 locals {
-  account_id = try(data.aws_caller_identity.current[0].account_id, "")
-  partition  = try(data.aws_partition.current[0].partition, "")
-  region     = try(data.aws_region.current[0].name, "")
+  account_id                   = try(data.aws_caller_identity.current[0].account_id, "")
+  create_access_policy         = var.create && var.create_access_policy && (length(var.access_policy_statements) > 0 || length(var.access_policy_source_policy_documents) > 0 || length(var.access_policy_override_policy_documents) > 0)
+  create_cloudwatch_log_groups = var.create && var.create_cloudwatch_log_groups
+  create_security_group        = var.create && var.create_security_group && length(var.vpc_options) > 0
+
+  partition = try(data.aws_partition.current[0].partition, "")
+  region    = try(data.aws_region.current[0].name, "")
+
+  security_group_name = try(coalesce(var.security_group_name, var.domain_name), "")
 
   static_domain_arn = "arn:${local.partition}:es:${local.region}:${local.account_id}:domain/${var.domain_name}"
 
   tags = merge(var.tags, { terraform-aws-modules = "opensearch" })
 
-  name   = "es-${var.application_name}"
+  name = "es-${var.application_name}"
 }
 
 ################################################################################
@@ -206,10 +212,6 @@ resource "aws_opensearch_domain" "this" {
 # Access Policy
 ################################################################################
 
-locals {
-  create_access_policy = var.create && var.create_access_policy && (length(var.access_policy_statements) > 0 || length(var.access_policy_source_policy_documents) > 0 || length(var.access_policy_override_policy_documents) > 0)
-}
-
 resource "aws_opensearch_domain_policy" "this" {
   count = var.create && var.enable_access_policy && (local.create_access_policy || var.access_policies != null) ? 1 : 0
 
@@ -326,10 +328,6 @@ resource "aws_opensearch_outbound_connection" "this" {
 # Cloudwatch Log Group
 ################################################################################
 
-locals {
-  create_cloudwatch_log_groups = var.create && var.create_cloudwatch_log_groups
-}
-
 resource "aws_cloudwatch_log_group" "this" {
   for_each = { for opt in var.log_publishing_options : opt.log_type => opt if try(opt.enabled, true) && local.create_cloudwatch_log_groups }
 
@@ -384,11 +382,6 @@ resource "aws_cloudwatch_log_resource_policy" "this" {
 ################################################################################
 # Security Group
 ################################################################################
-
-locals {
-  create_security_group = var.create && var.create_security_group && length(var.vpc_options) > 0
-  security_group_name   = try(coalesce(var.security_group_name, var.domain_name), "")
-}
 
 data "aws_subnet" "this" {
   count = local.create_security_group ? 1 : 0

@@ -58,7 +58,7 @@ module "opensearch" {
     instance_type            = coalesce(var.es_instance_type, var.es_dedicated_master_type)
 
     zone_awareness_config = {
-      availability_zone_count = 2
+      availability_zone_count = length(module.network.private_subnet_ids) > 3 ? 3 : length(module.network.private_subnet_ids)
     }
 
     zone_awareness_enabled = true
@@ -101,7 +101,7 @@ module "opensearch" {
   }
 
   vpc_options = {
-    subnet_ids = module.network.private_subnet_ids
+    subnet_ids = length(module.network.private_subnet_ids) > 3 ? slice(module.network.private_subnet_ids, 0, 3) : module.network.private_subnet_ids
   }
 
   # Security Group rule example
