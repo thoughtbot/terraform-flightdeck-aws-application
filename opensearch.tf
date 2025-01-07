@@ -161,7 +161,7 @@ data "aws_iam_policy_document" "ecs_osis_access" {
 
 module "es_pod_policy" {
   count  = var.elasticsearch_enabled ? 1 : 0
-  source = "github.com/thoughtbot/flightdeck//aws/service-account-policy?ref=v0.11.0"
+  source = "github.com/thoughtbot/flightdeck//aws/service-account-policy?ref=v0.12.1"
 
   name = "es-${var.es_application_name}-pods"
   policy_documents = concat(
