@@ -1,6 +1,6 @@
 module "sentry_dsn" {
   count  = var.sentry_enabled ? 1 : 0
-  source = "github.com/thoughtbot/terraform-aws-sentry-dsn?ref=v0.3.0"
+  source = "github.com/thoughtbot/terraform-aws-sentry-dsn?ref=v0.4.0"
 
   name              = var.sentry_project
   organization_slug = var.sentry_organization

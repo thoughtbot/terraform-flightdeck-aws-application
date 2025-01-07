@@ -3,7 +3,7 @@ module "sso_roles" {
 }
 
 module "pod_role" {
-  source = "github.com/thoughtbot/flightdeck//aws/service-account-role?ref=v0.9.0"
+  source = "github.com/thoughtbot/flightdeck//aws/service-account-role?ref=v0.11.0"
 
   cluster_names    = var.cluster_names
   name             = "${local.instance_name}-pods"
@@ -12,7 +12,7 @@ module "pod_role" {
 
 module "pod_policy" {
   count  = var.s3_enabled ? 1 : 0
-  source = "github.com/thoughtbot/flightdeck//aws/service-account-policy?ref=v0.9.0"
+  source = "github.com/thoughtbot/flightdeck//aws/service-account-policy?ref=v0.11.0"
 
   name             = "${local.instance_name}-pods"
   policy_documents = module.s3_bucket[*].policy_json
@@ -20,13 +20,13 @@ module "pod_policy" {
 }
 
 module "cluster" {
-  source = "github.com/thoughtbot/flightdeck//aws/cluster-name?ref=v0.9.0"
+  source = "github.com/thoughtbot/flightdeck//aws/cluster-name?ref=v0.11.0"
 
   name = var.cluster_names[0]
 }
 
 module "network" {
-  source = "github.com/thoughtbot/flightdeck//aws/network-data?ref=v0.9.0"
+  source = "github.com/thoughtbot/flightdeck//aws/network-data?ref=v0.11.0"
 
   tags = module.cluster.shared_tags
 }
