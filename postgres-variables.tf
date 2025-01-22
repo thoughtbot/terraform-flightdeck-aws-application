@@ -28,6 +28,12 @@ variable "postgres_enabled" {
   default     = false
 }
 
+variable "postgres_enable_kms" {
+  type        = bool
+  description = "Enable KMS encryption"
+  default     = true
+}
+
 variable "postgres_engine_version" {
   description = "Version for RDS database engine"
   type        = string

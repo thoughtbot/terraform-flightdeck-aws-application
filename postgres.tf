@@ -16,6 +16,7 @@ module "postgres" {
   storage_encrypted        = var.postgres_storage_encrypted
   subnet_ids               = module.network.private_subnet_ids
   vpc_id                   = module.network.vpc.id
+  enable_kms               = var.postgres_enable_kms
 }
 
 resource "random_id" "parameter_group" {

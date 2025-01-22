@@ -10,6 +10,7 @@ module "redis" {
   replica_count       = var.redis_replica_count
   subnet_ids          = module.network.private_subnet_ids
   vpc_id              = module.network.vpc.id
+  enable_kms          = var.redis_enable_kms
 }
 
 module "redis_token" {
