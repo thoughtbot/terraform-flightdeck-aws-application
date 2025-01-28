@@ -39,8 +39,7 @@ variable "auto_tune_options" {
   description = "Configuration block for the Auto-Tune options of the domain"
   type        = any
   default = {
-    desired_state       = "ENABLED"
-    rollback_on_disable = "NO_ROLLBACK"
+    desired_state       = "DISABLED"
   }
 }
 
