@@ -4,6 +4,12 @@ variable "redis_enabled" {
   default     = false
 }
 
+variable "redis_enable_kms" {
+  description = "Enable KMS encryption"
+  type        = bool
+  default     = true
+}
+
 variable "redis_name" {
   description = "Name of the ElastiCache instance for Redis"
   type        = string
