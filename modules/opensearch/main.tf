@@ -67,7 +67,7 @@ resource "aws_opensearch_domain" "this" {
     for_each = length(var.auto_tune_options) > 0 ? [var.auto_tune_options] : []
 
     content {
-      desired_state = try(auto_tune_options.value.desired_state, "ENABLED")
+      desired_state = try(auto_tune_options.value.desired_state, "DISABLED")
 
       dynamic "maintenance_schedule" {
         for_each = try(auto_tune_options.value.maintenance_schedule, [])

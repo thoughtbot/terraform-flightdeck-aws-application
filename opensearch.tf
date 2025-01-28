@@ -36,7 +36,7 @@ module "opensearch" {
   }
 
   auto_tune_options = {
-    desired_state = "ENABLED"
+    desired_state = "DISABLED"
 
     maintenance_schedule = [
       {
