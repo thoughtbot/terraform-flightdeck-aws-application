@@ -54,7 +54,7 @@ module "opensearch" {
 
   cluster_config = {
     instance_count           = var.es_instance_count
-    dedicated_master_enabled = true
+    dedicated_master_enabled = var.es_dedicated_master_enabled
     dedicated_master_type    = var.es_dedicated_master_type
     instance_type            = coalesce(var.es_instance_type, var.es_dedicated_master_type)
 

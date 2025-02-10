@@ -10,6 +10,12 @@ variable "es_instance_count" {
   default     = 2
 }
 
+variable "es_dedicated_master_enabled" {
+  type        = bool
+  description = "Set to true to enable dedicated master nodes"
+  default     = false
+}
+
 variable "es_dedicated_master_type" {
   type        = string
   description = "Instance type of the dedicated main nodes in the cluster."
