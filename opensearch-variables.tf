@@ -13,12 +13,13 @@ variable "es_instance_count" {
 variable "es_dedicated_master_type" {
   type        = string
   description = "Instance type of the dedicated main nodes in the cluster."
+  default     = ""
 }
 
 variable "es_instance_type" {
   type        = string
   description = "Instance type of data nodes in the cluster."
-  default     = ""
+  default     = "t3.small.search"
 }
 
 variable "es_volume_type" {
