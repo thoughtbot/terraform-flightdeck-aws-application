@@ -110,12 +110,12 @@ module "production_v1" {
 | <a name="module_opensearch"></a> [opensearch](#module\_opensearch) | ./modules/opensearch | n/a |
 | <a name="module_pod_policy"></a> [pod\_policy](#module\_pod\_policy) | github.com/thoughtbot/flightdeck//aws/service-account-policy | v0.12.1 |
 | <a name="module_pod_role"></a> [pod\_role](#module\_pod\_role) | github.com/thoughtbot/flightdeck//aws/service-account-role | v0.12.1 |
-| <a name="module_postgres"></a> [postgres](#module\_postgres) | github.com/thoughtbot/terraform-aws-databases//rds-postgres/primary-instance | v0.6.0 |
-| <a name="module_postgres_admin_login"></a> [postgres\_admin\_login](#module\_postgres\_admin\_login) | github.com/thoughtbot/terraform-aws-databases//rds-postgres/admin-login | v0.6.0 |
+| <a name="module_postgres"></a> [postgres](#module\_postgres) | github.com/thoughtbot/terraform-aws-databases//rds-postgres/primary-instance | v0.6.1 |
+| <a name="module_postgres_admin_login"></a> [postgres\_admin\_login](#module\_postgres\_admin\_login) | github.com/thoughtbot/terraform-aws-databases//rds-postgres/admin-login | v0.6.1 |
 | <a name="module_postgres_policy"></a> [postgres\_policy](#module\_postgres\_policy) | github.com/thoughtbot/terraform-aws-secrets//read-secret-policy | v0.8.0 |
-| <a name="module_redis"></a> [redis](#module\_redis) | github.com/thoughtbot/terraform-aws-databases//elasticache-redis/replication-group | v0.6.0 |
+| <a name="module_redis"></a> [redis](#module\_redis) | github.com/thoughtbot/terraform-aws-databases//elasticache-redis/replication-group | v0.6.1 |
 | <a name="module_redis_policy"></a> [redis\_policy](#module\_redis\_policy) | github.com/thoughtbot/terraform-aws-secrets//read-secret-policy | v0.8.0 |
-| <a name="module_redis_token"></a> [redis\_token](#module\_redis\_token) | github.com/thoughtbot/terraform-aws-databases//elasticache-redis/auth-token | v0.6.0 |
+| <a name="module_redis_token"></a> [redis\_token](#module\_redis\_token) | github.com/thoughtbot/terraform-aws-databases//elasticache-redis/auth-token | v0.6.1 |
 | <a name="module_s3_bucket"></a> [s3\_bucket](#module\_s3\_bucket) | github.com/thoughtbot/terraform-s3-bucket | v0.4.0 |
 | <a name="module_secret_key"></a> [secret\_key](#module\_secret\_key) | github.com/thoughtbot/terraform-aws-secrets//random-secret | v0.8.0 |
 | <a name="module_secret_key_policy"></a> [secret\_key\_policy](#module\_secret\_key\_policy) | github.com/thoughtbot/terraform-aws-secrets//read-secret-policy | v0.8.0 |

@@ -17,7 +17,7 @@ resource "aws_iam_service_linked_role" "elasticsearch" {
 
 module "opensearch" {
   count  = var.elasticsearch_enabled ? 1 : 0
-  source = "./modules/opensearch"
+  source = "github.com/thoughtbot/terraform-aws-databases//opensearch?ref=v0.6.1"
 
   # Domain
   advanced_options = {
