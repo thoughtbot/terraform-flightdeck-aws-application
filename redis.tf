@@ -4,7 +4,7 @@ module "redis" {
 
   allowed_cidr_blocks = [module.network.vpc.cidr_block]
   description         = "Redis cluster for ${local.instance_name} jobs"
-  engine_version      = "6.x"
+  engine_version      = var.redis_engine_version
   name                = var.redis_name
   node_type           = var.redis_node_type
   replica_count       = var.redis_replica_count
