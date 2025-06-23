@@ -29,10 +29,11 @@ module "production" {
   postgres_max_allocated_storage = 128
 
   # Redis
-  redis_enabled       = true
-  redis_name          = "example-production-blue"
-  redis_node_type     = "cache.m6g.large"
-  redis_replica_count = 1
+  redis_enabled        = true
+  redis_name           = "example-production-blue"
+  redis_node_type      = "cache.m6g.large"
+  redis_replica_count  = 1
+  redis_engine_version = "7.x"
 
   # S3
   s3_enabled     = true
@@ -178,6 +179,7 @@ module "production_v1" {
 | <a name="input_redis_name"></a> [redis\_name](#input\_redis\_name) | Name of the ElastiCache instance for Redis | `string` | `null` | no |
 | <a name="input_redis_node_type"></a> [redis\_node\_type](#input\_redis\_node\_type) | Node type for the ElastiCache instance for Redis | `string` | `null` | no |
 | <a name="input_redis_replica_count"></a> [redis\_replica\_count](#input\_redis\_replica\_count) | Number of replicas for the Redis cluster | `number` | `null` | no |
+| <a name="input_redis_engine_version"></a> [redis\ engine\ version](#input\_redis\_engine\_version) | ElastiCache instance Redis version| `string` | `null` | no |
 | <a name="input_s3_bucket_name"></a> [s3\_bucket\_name](#input\_s3\_bucket\_name) | Name of the S3 bucket for this application | `string` | `null` | no |
 | <a name="input_s3_enabled"></a> [s3\_enabled](#input\_s3\_enabled) | Set to true to enable creation of an S3 bucket | `bool` | `false` | no |
 | <a name="input_s3_read_principals"></a> [s3\_read\_principals](#input\_s3\_read\_principals) | Additional principals able to read S3 data | `list(string)` | `[]` | no |

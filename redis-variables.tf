@@ -4,6 +4,12 @@ variable "redis_enabled" {
   default     = false
 }
 
+variable "redis_engine_version" {
+  description = "The version of redis to run"
+  type        = string
+  default     = "7.x"
+}
+
 variable "redis_enable_kms" {
   description = "Enable KMS encryption"
   type        = bool
