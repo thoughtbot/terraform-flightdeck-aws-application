@@ -2,6 +2,7 @@ module "redis" {
   count  = var.redis_enabled ? 1 : 0
   source = "github.com/thoughtbot/terraform-aws-databases//elasticache-redis/replication-group?ref=v0.6.2"
 
+  apply_immediately    = var.redis_apply_immediately
   allowed_cidr_blocks = [module.network.vpc.cidr_block]
   description         = "Redis cluster for ${local.instance_name} jobs"
   engine_version      = var.redis_engine_version

@@ -1,3 +1,9 @@
+variable "redis_apply_immediately" {
+  description = "Apply changes immediately"
+  type        = bool
+  default     = false
+}
+
 variable "redis_enabled" {
   description = "Set to true to enable creation of a Redis instance"
   type        = bool
