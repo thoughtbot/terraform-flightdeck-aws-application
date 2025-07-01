@@ -13,7 +13,7 @@ variable "redis_enabled" {
 variable "redis_engine_version" {
   description = "The version of redis to run"
   type        = string
-  default     = "7.x"
+  default     = "7.1"
 }
 
 variable "redis_enable_kms" {
